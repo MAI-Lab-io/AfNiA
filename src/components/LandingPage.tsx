@@ -54,13 +54,14 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
   </div>
 
   <div className="relative">
-    <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-      <ImageWithFallback
-        src="src/assets/Neuroimaging Data Analysis in Action.png"
-        alt="Brain scan visualization"
-        className="w-full h-full object-cover"
+      <div className="rounded-2xl overflow-hidden shadow-2xl flex justify-center items-center bg-white">
+        <img
+         src="src/public/Neuroimaging Data Analysis in Action.png"
+         alt="Brain scan visualization"
+         className="max-w-full h-auto object-contain"
       />
-    </div>
+</div>
+
     <div className="absolute -bottom-6 -left-6 bg-primary text-white p-6 rounded-xl shadow-xl">
       <Activity className="w-8 h-8 mb-2" />
       <p style={{ fontWeight: 700 }}>Advancing Research</p>

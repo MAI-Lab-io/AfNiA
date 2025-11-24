@@ -1,6 +1,6 @@
 import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
-import logo from '../assets/logo.png';
+import logo from '../public/logo.png';
 
 interface HeaderProps {
   currentPage: string;

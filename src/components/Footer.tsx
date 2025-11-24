@@ -1,5 +1,5 @@
 import { Mail, MapPin } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../public/logo.png';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
