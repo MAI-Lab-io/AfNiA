@@ -14,7 +14,7 @@ export interface Dataset {
   participantCount: number;
   thumbnail: string;
   description: string;
-  accessType: 'Open' | 'Restricted';
+  accessType: 'Open' | 'Restricted' | 'Coming Soon';
 }
 
 interface DatasetCardProps {

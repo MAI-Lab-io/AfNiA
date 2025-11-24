@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -7,8 +8,11 @@ import { DatasetDetailPage } from './components/DatasetDetailPage';
 import { ContributePage } from './components/ContributePage';
 import { AboutPage } from './components/AboutPage';
 import { Dataset } from './components/DatasetCard';
-import bratsAfricaThumbnail from '/home/mailab/AfNiA/src/assets/BRATS_banner_noCaption.png';
-import preciseLogo from '/home/mailab/AfNiA/src/assets/pppp.jpg';
+import bratsAfricaThumbnail from './assets/BRATS_banner_noCaption.png';
+import preciseLogo from './assets/pppp.jpg';
+import Brainage from './assets/photo-1647613561332-3d88a6a0048e.jpeg';
+
+
 
 // Mock dataset data
 const mockDatasets: Dataset[] = [
@@ -38,75 +42,78 @@ const mockDatasets: Dataset[] = [
   },
   {
     id: '3',
-    title: 'Epilepsy Surgical Planning Database',
-    institution: 'KEMRI',
-    country: 'Kenya',
-    modality: ['MRI', 'PET'],
-    diagnosis: 'Epilepsy',
-    participantCount: 156,
-    thumbnail: 'https://images.unsplash.com/photo-1549925245-f20a1bac6454?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMHNjYW4lMjBNUkklMjBuZXVyb2ltYWdpbmd8ZW58MXx8fHwxNzYzMTExNzUwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Pre-surgical neuroimaging dataset for epilepsy patients undergoing evaluation for surgical intervention. Combines high-resolution structural MRI with PET imaging for seizure focus localization.',
-    accessType: 'Restricted',
-  },
-  {
-    id: '4',
-    title: 'Alzheimer\'s Disease Biomarkers',
-    institution: 'Cairo Medical Center',
-    country: 'Egypt',
-    modality: ['MRI', 'PET'],
-    diagnosis: 'Alzheimer\'s',
-    participantCount: 189,
-    thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMG5ldXJvc2NpZW5jZSUyMHJlc2VhcmNofGVufDF8fHx8MTc2MzExMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Multi-modal neuroimaging study investigating Alzheimer\'s disease biomarkers in Egyptian populations. Includes amyloid PET, tau PET, and structural MRI with neuropsychological assessments.',
-    accessType: 'Open',
-  },
-  {
-    id: '5',
-    title: 'Traumatic Brain Injury Outcomes',
-    institution: 'Makerere University',
-    country: 'Uganda',
-    modality: ['CT', 'MRI'],
-    diagnosis: 'TBI',
-    participantCount: 324,
-    thumbnail: 'https://images.unsplash.com/photo-1549925245-f20a1bac6454?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMHNjYW4lMjBNUkklMjBuZXVyb2ltYWdpbmd8ZW58MXx8fHwxNzYzMTExNzUwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Prospective study of traumatic brain injury patients with acute CT imaging and follow-up MRI scans. Tracks recovery trajectories and identifies predictors of long-term outcomes.',
-    accessType: 'Open',
-  },
-  {
-    id: '6',
-    title: 'Multiple Sclerosis Registry',
-    institution: 'University of Ghana Medical School',
-    country: 'Ghana',
-    modality: ['MRI'],
-    diagnosis: 'Multiple Sclerosis',
-    participantCount: 98,
-    thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMG5ldXJvc2NpZW5jZSUyMHJlc2VhcmNofGVufDF8fHx8MTc2MzExMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Registry of multiple sclerosis patients in West Africa with serial MRI scans documenting disease progression and treatment response over time.',
-    accessType: 'Restricted',
-  },
-  {
-    id: '7',
-    title: 'Healthy Adult Brain Atlas',
-    institution: 'University of Cape Town',
-    country: 'South Africa',
-    modality: ['MRI', 'DTI', 'fMRI'],
-    participantCount: 567,
-    thumbnail: 'https://images.unsplash.com/photo-1549925245-f20a1bac6454?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMHNjYW4lMjBNUkklMjBuZXVyb2ltYWdpbmd8ZW58MXx8fHwxNzYzMTExNzUwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Comprehensive normative dataset of healthy adults aged 18-65 years. Multi-modal imaging including structural MRI, DTI, and resting-state fMRI for establishing population norms.',
-    accessType: 'Open',
-  },
-  {
-    id: '8',
-    title: 'Parkinson\'s Disease Progression',
-    institution: 'Lagos University Hospital',
+    title: 'Brain Age Dataset',
+    institution: 'MAILAB',
     country: 'Nigeria',
-    modality: ['MRI', 'PET'],
-    diagnosis: 'Parkinson\'s',
-    participantCount: 134,
-    thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmFpbiUyMG5ldXJvc2NpZW5jZSUyMHJlc2VhcmNofGVufDF8fHx8MTc2MzExMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    description: 'Longitudinal study tracking Parkinson\'s disease progression in West African patients. Includes dopamine transporter PET imaging and structural MRI with clinical motor assessments.',
-    accessType: 'Restricted',
+    modality: ['MRI'],
+    diagnosis: 'Normal',
+    participantCount: 500,
+    thumbnail: Brainage,
+    description: 'Pre-surgical neuroimaging dataset for epilepsy patients undergoing evaluation for surgical intervention. Combines high-resolution structural MRI with PET imaging for seizure focus localization.',
+    accessType: 'Coming Soon',
   },
+ /*
+{
+  id: '4',
+  title: 'Alzheimer\'s Disease Biomarkers',
+  institution: 'Cairo Medical Center',
+  country: 'Egypt',
+  modality: ['MRI', 'PET'],
+  diagnosis: 'Alzheimer\'s',
+  participantCount: 189,
+  thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?...',
+  description: 'Multi-modal neuroimaging study investigating Alzheimer\'s disease biomarkers...',
+  accessType: 'Open',
+},
+{
+  id: '5',
+  title: 'Traumatic Brain Injury Outcomes',
+  institution: 'Makerere University',
+  country: 'Uganda',
+  modality: ['CT', 'MRI'],
+  diagnosis: 'TBI',
+  participantCount: 324,
+  thumbnail: 'https://images.unsplash.com/photo-1549925245-f20a1bac6454?...',
+  description: 'Prospective study of traumatic brain injury patients...',
+  accessType: 'Open',
+},
+{
+  id: '6',
+  title: 'Multiple Sclerosis Registry',
+  institution: 'University of Ghana Medical School',
+  country: 'Ghana',
+  modality: ['MRI'],
+  diagnosis: 'Multiple Sclerosis',
+  participantCount: 98,
+  thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?...',
+  description: 'Registry of multiple sclerosis patients in West Africa...',
+  accessType: 'Restricted',
+},
+{
+  id: '7',
+  title: 'Healthy Adult Brain Atlas',
+  institution: 'University of Cape Town',
+  country: 'South Africa',
+  modality: ['MRI', 'DTI', 'fMRI'],
+  participantCount: 567,
+  thumbnail: 'https://images.unsplash.com/photo-1549925245-f20a1bac6454?...',
+  description: 'Comprehensive normative dataset of healthy adults aged 18-65 years...',
+  accessType: 'Open',
+},
+{
+  id: '8',
+  title: 'Parkinson\'s Disease Progression',
+  institution: 'Lagos University Hospital',
+  country: 'Nigeria',
+  modality: ['MRI', 'PET'],
+  diagnosis: 'Parkinson\'s',
+  participantCount: 134,
+  thumbnail: 'https://images.unsplash.com/photo-1647613561332-3d88a6a0048e?...',
+  description: 'Longitudinal study tracking Parkinson\'s disease progression...',
+  accessType: 'Restricted',
+},
+*/
+
 ];
 
 function App() {
