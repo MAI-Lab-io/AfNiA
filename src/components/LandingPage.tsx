@@ -3,7 +3,7 @@ import { Database, Upload, MapPin, Users, Brain, Activity } from 'lucide-react';
 import { Button } from './ui/button';
 import { StatCard } from './StatCard';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import '/home/mailab/AfNiA/src/styles/LandingPage.css'; // Make sure to import the CSS
+import '../styles/LandingPage.css'; // Make sure to import the CSS
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
