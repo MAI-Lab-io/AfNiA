@@ -8,7 +8,7 @@ import { DatasetDetailPage } from './components/DatasetDetailPage';
 import { ContributePage } from './components/ContributePage';
 import { AboutPage } from './components/AboutPage';
 import { Dataset } from './components/DatasetCard';
-import bratsAfricaThumbnail from './public/BRATS_banner_noCaption.png';
+import bratsAfricaThumbnail from './public/generated_image(2).png';
 import preciseLogo from './public/pppp.jpg';
 import Brainage from './public/photo-1647613561332-3d88a6a0048e.jpeg';
 
