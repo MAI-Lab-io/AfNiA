@@ -22,15 +22,15 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
           Back to Datasets
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"> 
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Preview */}
-            <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-6">
+            <div className="aspect-video bg-white rounded-lg overflow-hidden mb-6 p-2">  
               <ImageWithFallback
                 src={dataset.thumbnail}
                 alt={dataset.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
 
@@ -62,6 +62,11 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
             {dataset.id === '1' && (
               <Card className="p-6 mb-6">
                 <h3 className="mb-4">Data Access</h3>
+                <p className="text-muted-foreground mb-4">
+                  Some data in this collection contains images that could potentially be used to reconstruct a human face. 
+                  Due to NIH Controlled Data Access Policy changes, downloads that are previously required login-access are 
+                  no longer available via TCIA.
+                </p>
                 
                 <div className="mb-4">
                   <p className="mb-2">Version 1: Updated 2024/09/04</p>

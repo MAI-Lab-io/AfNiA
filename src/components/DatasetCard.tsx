@@ -16,7 +16,6 @@ export interface Dataset {
   description: string;
   accessType: 'Open' | 'Restricted' | 'Coming Soon';
 }
-
 interface DatasetCardProps {
   dataset: Dataset;
   onView: (id: string) => void;
@@ -25,11 +24,11 @@ interface DatasetCardProps {
 export function DatasetCard({ dataset, onView }: DatasetCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-video bg-gray-100 relative overflow-hidden">
+      <div className="aspect-video bg-white relative overflow-hidden p-2">
         <ImageWithFallback
           src={dataset.thumbnail}
           alt={dataset.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
       <div className="p-6">

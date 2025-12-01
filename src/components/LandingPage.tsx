@@ -56,7 +56,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
   <div className="relative">
       <div className="rounded-2xl overflow-hidden shadow-2xl flex justify-center items-center bg-white">
         <img
-         src="src/public/Neuroimaging Data Analysis in Action.png"
+         src="/Neuroimaging Data Analysis in Action.png"
          alt="Brain scan visualization"
          className="max-w-full h-auto object-contain"
       />
