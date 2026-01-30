@@ -104,7 +104,7 @@ export function ExplorePage({ datasets, onViewDataset }: ExplorePageProps) {
             <div className="mb-4 text-muted-foreground">
               Showing {filteredDatasets.length} of {datasets.length} datasets
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredDatasets.map((dataset) => (
                 <DatasetCard
                   key={dataset.id}

@@ -30,8 +30,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto"
   />
   <span className="flex items-center gap-2">
-    <span style={{ color: '#7C3AED', fontWeight: '900', fontSize: '2.5rem' }}>AfNIA</span>
-    <span style={{ color: '#000000', fontWeight: 400, fontSize: '1.25rem' }}>- African NeuroImaging Archive</span>
+    <span style={{ color: '#7C3AED', fontWeight: '900', fontSize: '2.5rem' }}>AfNiA</span>
+    <span style={{ color: '#000000', fontWeight: 400, fontSize: '2.5rem' }}>- African NeuroImaging Archive</span>
   </span>
 </button>
 

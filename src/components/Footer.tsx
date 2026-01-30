@@ -45,24 +45,36 @@ export function Footer({ onNavigate }: FooterProps) {
             </ul>
           </div>
 
-          {/* Contact */}
+{/* Contact */}
           <div>
             <h4 className="mb-4">Contact</h4>
             <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="w-4 h-4" />
-                <span>info@mailab.io</span>
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-muted-foreground" />
+                <a 
+                  href="mailto:info@afnia.mailab.io" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  info@mailab.io
+                </a>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
-                <MapPin className="w-4 h-4" />
-                <span>MAILAB</span>
+              <li className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-muted-foreground" />
+                <a 
+                  href="https://mailab.io/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  MAILAB, Igbobi, Lagos
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>© 2025 MAILAB. All rights reserved. Building a more equitable future for neuroscience in Africa.</p>
+          <p>© 2025 MAILAB All rights reserved. Building a more equitable future for neuroscience in Africa.</p>
         </div>
       </div>
     </footer>

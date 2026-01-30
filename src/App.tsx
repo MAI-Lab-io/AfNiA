@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingPage } from './components/LandingPage';
@@ -10,7 +10,8 @@ import { AboutPage } from './components/AboutPage';
 import { Dataset } from './components/DatasetCard';
 import bratsAfricaThumbnail from './public/generated_image(2).png';
 import preciseLogo from './public/pppp.jpg';
-import Brainage from './public/photo-1647613561332-3d88a6a0048e.jpeg';
+// Brainage image removed because the file was not found; use afniaLogo as a fallback thumbnail
+import afniaLogo from './public/favicon-32.png';
 
 
 
@@ -21,7 +22,7 @@ const mockDatasets: Dataset[] = [
     title: 'BraTs-Africa Dataset',
     institution: 'Six Diagnostic Centers (Nigeria)',
     country: 'Nigeria',
-    modality: ['MRI', 'Segmentation'],
+    modality: ['MRI'],
     diagnosis: 'Brain Cancer',
     participantCount: 146,
     thumbnail: bratsAfricaThumbnail,
@@ -30,10 +31,10 @@ const mockDatasets: Dataset[] = [
   },
   {
     id: '2',
-    title: 'The PRECISE-ABreast Challenge Dataset',
-    institution: 'PRECISE Consortium',
-    country: 'Multi-country (Sub-Saharan Africa)',
-    modality: ['Ultrasound', 'BUS'],
+    title: 'The PRECISE-ABreast Dataset',
+    institution: 'PRECISE',
+    country: 'Sub-Saharan Africa',
+    modality: ['Ultrasound'],
     diagnosis: 'Breast Cancer',
     participantCount: 7354,
     thumbnail: preciseLogo,
@@ -48,7 +49,7 @@ const mockDatasets: Dataset[] = [
     modality: ['MRI'],
     diagnosis: 'Normal',
     participantCount: 500,
-    thumbnail: Brainage,
+    thumbnail: afniaLogo,
     description: 'Pre-surgical neuroimaging dataset for epilepsy patients undergoing evaluation for surgical intervention. Combines high-resolution structural MRI with PET imaging for seizure focus localization.',
     accessType: 'Coming Soon',
   },
@@ -120,6 +121,28 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedDatasetId, setSelectedDatasetId] = useState<string | null>(null);
 
+
+    // Set favicon to AfNIA logo
+  useEffect(() => {
+    const setFavicon = () => {
+      // Remove existing favicon links
+      const existingLinks = document.querySelectorAll("link[rel*='icon']");
+      existingLinks.forEach(link => link.remove());
+
+      // Add new favicon
+      const link = document.createElement('link');
+      link.rel = 'icon';
+      link.type = 'image/png';
+      link.href = afniaLogo;
+      document.head.appendChild(link);
+
+      // Set page title
+      document.title = 'AfNIA - African NeuroImaging Archive';
+    };
+
+    setFavicon();
+  }, []);
+
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
     setSelectedDatasetId(null);
@@ -146,7 +169,7 @@ function App() {
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
       
       <main className="flex-1">
-        {currentPage === 'home' && <LandingPage onNavigate={handleNavigate} />}
+        {currentPage === 'home' && <LandingPage onNavigate={handleNavigate} datasets={mockDatasets} />}
         {currentPage === 'explore' && (
           <ExplorePage datasets={mockDatasets} onViewDataset={handleViewDataset} />
         )}
@@ -168,4 +191,3 @@ function App() {
 }
 
 export default App;
-

@@ -1,9 +1,11 @@
-import { ArrowLeft, Download, Lock, MapPin, Users, Calendar, Database } from 'lucide-react';
+import { useState, useEffect} from 'react';
+import { ArrowLeft, Download, Lock, MapPin, Users, Calendar, Database, Eye, FileDown, Quote} from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
 import { Dataset } from './DatasetCard';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { DataAccessRequestModal } from './DataAccessRequestModal';
 
 interface DatasetDetailPageProps {
   dataset: Dataset;
@@ -13,6 +15,73 @@ interface DatasetDetailPageProps {
 }
 
 export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewDataset }: DatasetDetailPageProps) {
+  const [showAccessModal, setShowAccessModal] = useState(false);
+    const [stats, setStats] = useState({
+    viewCount: dataset.viewCount || 0,
+    downloadCount: dataset.downloadCount || 0,
+    citationCount: dataset.citationCount || 0,
+  });
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
+
+  // Fetch and increment view count when component mounts
+  useEffect(() => {
+    const trackView = async () => {
+      try {
+        // Increment view count
+        const response = await fetch(
+          `https://${projectId}.supabase.co/functions/v1/make-server-e3110718/dataset-stats/${dataset.id}/view`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${publicAnonKey}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.ok) {
+          const updatedStats = await response.json();
+          setStats(updatedStats);
+        } else {
+          console.error('Failed to increment view count');
+        }
+      } catch (error) {
+        console.error('Error tracking view:', error);
+      } finally {
+        setIsLoadingStats(false);
+      }
+    };
+
+    trackView();
+  }, [dataset.id]);
+
+  const handleAccessDataset = () => {
+    setShowAccessModal(true);
+  };
+
+  const handleAccessGranted = async () => {
+    // Increment download count when access is granted
+    try {
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-e3110718/dataset-stats/${dataset.id}/download`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${publicAnonKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.ok) {
+        const updatedStats = await response.json();
+        setStats(updatedStats);
+      }
+    } catch (error) {
+      console.error('Error incrementing download count:', error);
+    }
+  };
+
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">
@@ -22,17 +91,9 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
           Back to Datasets
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"> 
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            {/* Preview */}
-            <div className="aspect-video bg-white rounded-lg overflow-hidden mb-6 p-2">  
-              <ImageWithFallback
-                src={dataset.thumbnail}
-                alt={dataset.title}
-                className="w-full h-full object-contain"
-              />
-            </div>
 
             {/* Title and Tags */}
             <div className="mb-6">
@@ -52,6 +113,60 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
               </div>
             </div>
 
+
+            {/* Preview */}
+            <div className="aspect-video bg-white rounded-lg overflow-hidden mb-6 p-2">
+              <ImageWithFallback
+                src={dataset.thumbnail}
+                alt={dataset.title}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+         {/* Usage Statistics */}
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <Card className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Eye className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      {isLoadingStats ? '...' : stats.viewCount.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Views</p>
+                  </div>
+                </div>
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <FileDown className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      {isLoadingStats ? '...' : stats.downloadCount.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Downloads</p>
+                  </div>
+                </div>
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Quote className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      {isLoadingStats ? '...' : stats.citationCount.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Citations</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            
             {/* Description */}
             <Card className="p-6 mb-6">
               <h3 className="mb-4">Description</h3>
@@ -62,11 +177,6 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
             {dataset.id === '1' && (
               <Card className="p-6 mb-6">
                 <h3 className="mb-4">Data Access</h3>
-                <p className="text-muted-foreground mb-4">
-                  Some data in this collection contains images that could potentially be used to reconstruct a human face. 
-                  Due to NIH Controlled Data Access Policy changes, downloads that are previously required login-access are 
-                  no longer available via TCIA.
-                </p>
                 
                 <div className="mb-4">
                   <p className="mb-2">Version 1: Updated 2024/09/04</p>
@@ -93,17 +203,14 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
                         <td className="p-3 border">MRI, Segmentation</td>
                         <td className="p-3 border">NIFTI</td>
                         <td className="p-3 border">
-                          <a
-                            href="https://faspex.cancerimagingarchive.net/aspera/faspex/public/package?context=eyJyZXNvdXJjZSI6InBhY2thZ2VzIiwidHlwZSI6ImV4dGVybmFsX2Rvd25sb2FkX3BhY2thZ2UiLCJpZCI6Ijk0OCIsInBhc3Njb2RlIjoiOTg2MzVlMGRmNzc3NWQ0NWJmZTQ2NjlhYzQwNjNmYjcxMjU0MzI1NyIsInBhY2thZ2VfaWQiOiI5NDgiLCJlbWFpbCI6ImhlbHBAY2FuY2VyaW1hZ2luZ2FyY2hpdmUubmV0In0="
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block"
+                          <Button 
+                            size="sm" 
+                            className="mb-1"
+                            onClick={() => setShowAccessModal(true)}
                           >
-                            <Button size="sm" className="mb-1">
-                              <Download className="w-4 h-4 mr-2" />
-                              DOWNLOAD (4 GB)
-                            </Button>
-                          </a>
+                            <Download className="w-4 h-4 mr-2" />
+                            DOWNLOAD (4 GB)
+                          </Button>
                           <p className="text-xs text-muted-foreground mt-1">
                             Download requires{' '}
                             <a
@@ -171,33 +278,25 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
               {dataset.accessType === 'Open' ? (
                 <>
                   <p className="text-muted-foreground mb-6">
-                    This dataset is openly available for download. By downloading, you agree to use the data ethically and cite the source appropriately.
+                    This dataset is openly available. Complete the Data Use Agreement to download.
                   </p>
-                  {dataset.id === '1' ? (
-                    <a
-                      href="https://faspex.cancerimagingarchive.net/aspera/faspex/public/package?context=eyJyZXNvdXJjZSI6InBhY2thZ2VzIiwidHlwZSI6ImV4dGVybmFsX2Rvd25sb2FkX3BhY2thZ2UiLCJpZCI6Ijk0OCIsInBhc3Njb2RlIjoiOTg2MzVlMGRmNzc3NWQ0NWJmZTQ2NjlhYzQwNjNmYjcxMjU0MzI1NyIsInBhY2thZ2VfaWQiOiI5NDgiLCJlbWFpbCI6ImhlbHBAY2FuY2VyaW1hZ2luZ2FyY2hpdmUubmV0In0="
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <Button className="w-full mb-3">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download Dataset
-                      </Button>
-                    </a>
-                  ) : (
-                    <Button className="w-full mb-3">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Dataset
-                    </Button>
-                  )}
+                  <Button 
+                    className="w-full mb-3"
+                    onClick={() => setShowAccessModal(true)}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Access Dataset
+                  </Button>
                 </>
               ) : (
                 <>
                   <p className="text-muted-foreground mb-6">
-                    This dataset requires approval to access. Submit a request describing your research purpose and intended use.
+                    This dataset requires approval to access. Submit a request with your research purpose and agree to the data use terms.
                   </p>
-                  <Button className="w-full mb-3">
+                  <Button 
+                    className="w-full mb-3"
+                    onClick={() => setShowAccessModal(true)}
+                  >
                     <Lock className="w-4 h-4 mr-2" />
                     Request Access
                   </Button>
@@ -249,6 +348,15 @@ export function DatasetDetailPage({ dataset, relatedDatasets, onBack, onViewData
           </div>
         )}
       </div>
+
+      {/* Data Access Request Modal */}
+      <DataAccessRequestModal
+        open={showAccessModal}
+        onClose={() => setShowAccessModal(false)}
+        datasetTitle={dataset.title}
+        datasetId={dataset.id}
+        accessType={dataset.accessType}
+      />
     </div>
   );
 }
