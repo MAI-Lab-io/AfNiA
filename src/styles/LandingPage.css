@@ -1,14 +1,37 @@
-.scrolling-partners {
+/* Partner logos */
+.partner-card {
+  height: 80px;
+  padding: 16px;
   display: flex;
-  gap: 2rem;
-  animation: scroll-left 20s linear infinite;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes scroll-left {
-  0% {
+.partner-logo {
+  max-width: 140px;
+  max-height: 48px;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.85;
+  transition: all 0.25s ease;
+}
+
+.partner-card:hover .partner-logo {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* Scrolling animation (keep if not already present) */
+.scrolling-partners {
+  width: max-content;
+  animation: partners-scroll 20s linear infinite;
+}
+
+@keyframes partners-scroll {
+  from {
     transform: translateX(0);
   }
-  100% {
+  to {
     transform: translateX(-50%);
   }
 }

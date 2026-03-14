@@ -1,5 +1,5 @@
 import { Mail, MapPin } from 'lucide-react';
-import logo from '../public/logo.png';
+import logo from '/logo.png';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
@@ -55,7 +55,7 @@ export function Footer({ onNavigate }: FooterProps) {
                   href="mailto:info@afnia.mailab.io" 
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  info@mailab.io
+                  info@afnia.mailab.io
                 </a>
               </li>
               <li className="flex items-center gap-2">
